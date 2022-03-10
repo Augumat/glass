@@ -3,8 +3,6 @@
 #include <math.h>
 #include "raylib.h"
 
-#define SHADOW CLITERAL(Color){ 0, 0, 0, 64 }
-
 int main() 
 {
     // Initialization
@@ -73,7 +71,14 @@ int main()
         if (score > 0) { score--; }
         
         // halo step
-        if (colorPos.a == 0.0 && IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+        Vector2 mousePos = GetMousePosition();
+        if (colorPos.a == 0.0
+         && IsMouseButtonDown(MOUSE_LEFT_BUTTON)
+         && mousePos.x > 0
+         && mousePos.y > 0
+         && mousePos.x < windowWidth
+         && mousePos.y < windowHeight
+        ) {
             // award score for catching the target
             score += SCORE_INCREMENT;
             // reset the hint timer
