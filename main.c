@@ -8,7 +8,9 @@ int main()
     // Initialization
     //--------------------------------------------------------------------------------------
     // constants
-    const unsigned int SCORE_INCREMENT = 750;
+    const unsigned int SCORE_INCREMENT = 1000;
+    const unsigned int MAX_SCORE_PENALTY = 750;
+    const unsigned int PENALTY_THRESHOLD = 10000;
     const unsigned int MAX_HINT_TIME = 60 * 30;
     const float BASE_COLOR_VEL = 24.0;
     const float ESCAPE_SPEED = 160.0;
@@ -79,8 +81,13 @@ int main()
          && mousePos.x < windowWidth
          && mousePos.y < windowHeight
         ) {
+            printf("\n[1] ");
             // award score for catching the target
-            score += SCORE_INCREMENT;
+            if (score < PENALTY_THRESHOLD) {
+                score += SCORE_INCREMENT - (unsigned int)(MAX_SCORE_PENALTY * ( (float)(score) / (float)(PENALTY_THRESHOLD) ));
+            } else {
+                score += SCORE_INCREMENT - MAX_SCORE_PENALTY;
+            }
             // reset the hint timer
             hintTime = 0;
             // start the halo animation
@@ -92,17 +99,21 @@ int main()
             windowVel = ESCAPE_SPEED;
         } else if (colorPos.a > 0.0) {
             if (colorPos.a - colorVel < 0.0) {
+                printf("\n[2] ");
                 // halo is over, go back to normal speed
                 colorPos.a = 0.0;
                 windowVel = NORMAL_SPEED;
             } else {
+                printf("\n[3] ");
                 // smooth the damage animation
                 colorPos.a -= colorVel;
                 colorVel = (colorVel / 1.5) + (4.0 * (1.0 - (colorVel / BASE_COLOR_VEL)));
                 // smooth the escape speed
-                windowVel = NORMAL_SPEED + ((ESCAPE_SPEED - NORMAL_SPEED) * (colorVel / BASE_COLOR_VEL));
+                windowVel = NORMAL_SPEED + ((ESCAPE_SPEED - NORMAL_SPEED) * (colorPos.a / 255.0));
+                printf("%f ", (1.0 - (colorPos.a / 255.0)));
             }
         } else {
+            printf("\n[4] ");
             // increase hint timer gradually during normal movement
             if (hintTime < MAX_HINT_TIME) { hintTime++; }
         }
@@ -111,7 +122,11 @@ int main()
         hintPos.a = 255.0 * ((1.0 * hintTime) / (1.0 * MAX_HINT_TIME));
         
         // update score display text
-        sprintf(scoreText, "Score: %u", score);
+        if (score < PENALTY_THRESHOLD) {
+            sprintf(scoreText, "Score: %u", score);
+        } else {
+            sprintf(scoreText, "%c Score: %u %c", 64 + (rand() % 62), score, 64 + (rand() % 62));
+        }
         SetWindowTitle(scoreText);
         
         // window position and enclosure (current monitor)
