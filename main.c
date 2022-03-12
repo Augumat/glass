@@ -102,14 +102,14 @@ int main()
     const float NORMAL_SPEED = 16.0;
 
     // color data
-    Color colorPos = BLANK;
-    colorPos.r = 255.0;
+    Color colorPos = RED;
+    colorPos.a = 0.0;
     float colorVel = -24.0;
     
     // hint data
     Color hintPos = BLACK;
-    hintPos.a = 0.0;
-    unsigned int hintTime = 0;
+    unsigned int hintTime = MAX_HINT_TIME;
+    unsigned char hasGameStarted = 0;
 
     // window data
     int currentMonitor = 0;
@@ -125,11 +125,6 @@ int main()
     char* scoreText = calloc(256, 1);
     unsigned int score = 0;
     unsigned int highScore = 0;
-    
-    // velocity setup
-    windowDir.x = (float)(rand()) / (float)(RAND_MAX);
-    windowDir.y = (float)(rand()) / (float)(RAND_MAX);
-    windowVel = NORMAL_SPEED;
     
     // debug
     char* winText = calloc(256, 1);
@@ -184,9 +179,9 @@ int main()
         //----------------------------------------------------------------------------------
         
         // score decay step
-        if (score > 0) {
+        if (hasGameStarted && score > 0) {
             if (score > highScore) { highScore = score; }
-            score--;
+            if (colorPos.a == 0.0) { score--; }
         }
         
         // halo step
@@ -198,6 +193,8 @@ int main()
          && mousePos.x < windowWidth
          && mousePos.y < windowHeight
         ) {
+            // start the game if it hadn't already started
+            hasGameStarted = 1;
             // award score for catching the target
             if (score < T1_PENALTY_THRESHOLD) {
                 score += SCORE_INCREMENT
