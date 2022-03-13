@@ -1,2 +1,2 @@
 #include "resource.h"
-IDI_GLASS ICON "res\\exeIcon.ico"
+IDI_GLASS ICON "res\\glass.ico"
