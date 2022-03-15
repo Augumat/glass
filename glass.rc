@@ -1,2 +1,25 @@
 #include "resource.h"
+
+// exe icon
 IDI_GLASS ICON "res\\glass.ico"
+
+// tier icons
+TIER0_IMG PNG_RESOURCE "res\\tex\\t0.png"
+TIER1_IMG PNG_RESOURCE "res\\tex\\t1.png"
+TIER2_IMG PNG_RESOURCE "res\\tex\\t2.png"
+TIER3_IMG PNG_RESOURCE "res\\tex\\t3.png"
+TIER4_IMG PNG_RESOURCE "res\\tex\\t4.png"
+TIER5_IMG PNG_RESOURCE "res\\tex\\t5.png"
+TIER6_IMG PNG_RESOURCE "res\\tex\\t6.png"
+TIER7_IMG PNG_RESOURCE "res\\tex\\t7.png"
+TIER8_IMG PNG_RESOURCE "res\\tex\\t8.png"
+TIER9_IMG PNG_RESOURCE "res\\tex\\t9.png"
+TIER10_IMG PNG_RESOURCE "res\\tex\\t10.png"
+
+// sound effects
+BOUNCE_SOUND WAV_RESOURCE "res\\sfx\\bounce.wav"
+HIT_SOUND WAV_RESOURCE "res\\sfx\\hit.wav"
+GAME_OVER_SOUND WAV_RESOURCE "res\\sfx\\gameover.wav"
+
+// level data
+//todo
